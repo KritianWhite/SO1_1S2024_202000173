@@ -19,6 +19,6 @@ func main() {
 
     // Iniciar el servidor en el puerto 8000 con CORS habilitado
     handler := c.Handler(mux)
-    fmt.Println("Servidor escuchando en el puerto 8000...")
-    http.ListenAndServe(":8000", handler)
+    fmt.Println("Servidor escuchando en el puerto 8080...")
+    http.ListenAndServe(":8080", handler)
 }

@@ -8,7 +8,7 @@ function App() {
   const handleClick = async () => {
     try {
       // Realizar una solicitud al servidor Go para obtener el mensaje
-      const response = await fetch('http://localhost:8000/data');
+      const response = await fetch('http://localhost:8080/data');
       const data = await response.text();
 
       // Actualizar el estado del mensaje

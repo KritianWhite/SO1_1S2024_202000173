@@ -1,0 +1,23 @@
+# Usa una imagen de Go como base
+FROM golang:1.21.6-alpine
+
+# Establece el directorio de trabajo en la aplicación
+WORKDIR /app
+
+# Copia los archivos de tu aplicación al contenedor
+COPY . .
+
+# Compila la aplicación
+RUN go build -o main .
+
+# Expone el puerto en el que se ejecuta la aplicación
+EXPOSE 8080
+
+# Comando para ejecutar la aplicación
+CMD ["./main"]
+
+#Notas:
+# Crear imagen: docker build -t back_tarea1 .
+#docker build -t back_tarea1 .
+# Correr imagen: docker run -p 8080:8080 back_tarea1
+#docker run -p 8080:8080 back_tarea1docker
