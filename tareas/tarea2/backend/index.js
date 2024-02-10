@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 
 // Conecta a la base de datos
-mongoose.connect('mongodb://localhost:27017/tarea2', {
+mongoose.connect('mongodb://localhost:27018/tarea2', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
