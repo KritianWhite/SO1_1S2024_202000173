@@ -1,0 +1,53 @@
+/* Centrar el contenedor y todo su contenido */
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+/* Estilo para el video y el canvas */
+video,
+.latest-image {
+  max-width: 90%;
+  /* Ocupar la mayor parte de la pantalla manteniendo el margen */
+  border: 3px solid #00b4d8;
+  /* Borde de color claro */
+  border-radius: 20px;
+  /* Bordes redondeados */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5vh;
+}
+
+/* Estilo para el botón */
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #0096c7;
+  /* Color que combina con el oceano */
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Sombra suave para el botón */
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0077b6;
+  /* Color más oscuro al pasar el mouse */
+}
+
+/* Media query para dispositivos grandes */
+@media (min-width: 1024px) {
+
+  video {
+    max-width: 640px;
+    /* Tamaño fijo para dispositivos más grandes */
+    max-height: 360px;
+    /* Altura ajustada para mantener la relación 9:16 */
+  }
+}
