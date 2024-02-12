@@ -264,3 +264,83 @@ El comando utilizado para ejecutar el contenedor Docker de MongoDB se explica ac
 
 ## DOCKER COMPOSE
 
+
+1. **Definición de servicios**:
+   - `frontend`: Este servicio se construirá a partir de los archivos ubicados en el directorio `./frontend`. Además, se mapea el puerto 3000 del contenedor al puerto 3000 del host, lo que significa que cualquier aplicación que se ejecute dentro del contenedor en el puerto 3000 estará disponible para ser accedida desde el puerto 3000 del sistema anfitrión.
+   
+   ```javascript
+    frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+   ```
+   
+   - `backend`: Similar al servicio de frontend, este servicio se construirá a partir de los archivos ubicados en el directorio `./backend`. El puerto 8000 del contenedor se mapea al puerto 8000 del host. Además, se establece una variable de entorno llamada `MONGO_URL` con el valor `mongodb://db:27018/tarea2`. Esta variable de entorno se utiliza para que la aplicación backend pueda conectarse a la base de datos MongoDB. En esta URL, `db` es el nombre del servicio del contenedor de la base de datos MongoDB (definido más adelante en el archivo YAML), `27018` es el puerto en el que el servicio de MongoDB está escuchando en el contenedor, y `tarea2` es el nombre de la base de datos a la que la aplicación backend intentará conectarse.
+   
+    ```javascript
+    backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://db:27018/tarea2
+   ```
+
+   - `db`: Este servicio utiliza la imagen preconstruida de MongoDB desde Docker Hub. Se expone el puerto 27018 del contenedor al puerto 27018 del host. Además, se define un volumen llamado `mongodb`, que se utilizará para almacenar los datos de la base de datos MongoDB. Esto garantiza que los datos de la base de datos persistan incluso si el contenedor se detiene o se elimina.
+
+   ```javascript
+    db:
+    image: mongo
+    ports:
+      - "27018:27018"
+    volumes:
+      - mongodb:/data/db
+   ```
+
+2. **Definición de volúmenes**:
+   - `volumes`: En esta sección, se define un volumen llamado `mongodb`. Este volumen se utilizará para persistir los datos de la base de datos MongoDB. Los volúmenes son una forma de almacenar datos de forma persistente fuera de los contenedores de Docker, lo que significa que los datos permanecerán incluso si los contenedores se eliminan.
+
+    ```javascript
+    volumes:
+        mongodb:
+    ```
+
+### DOCKERFILE BACKEND
+
+Este es un archivo Dockerfile utilizado para construir una imagen de Docker para una aplicación Node.js. A continuación, se explica cada instrucción:
+
+1. `FROM node:16.20.2-alpine`: Esta instrucción especifica la imagen base que se utilizará para construir esta imagen de Docker. En este caso, se utiliza la imagen oficial de Node.js con la etiqueta `16.20.2-alpine`. Esta imagen está basada en Alpine Linux, una distribución Linux liviana, y contiene Node.js instalado.
+
+2. `WORKDIR /app`: Esta instrucción establece el directorio de trabajo dentro del contenedor en `/app`. Esto significa que todos los comandos siguientes se ejecutarán dentro de este directorio.
+
+3. `COPY package*.json ./`: Esta instrucción copia los archivos `package.json` y `package-lock.json` (si existen) desde el directorio actual del contexto de construcción del Dockerfile (normalmente el directorio donde se encuentra el Dockerfile) al directorio de trabajo (`/app` dentro del contenedor).
+
+4. `RUN npm install`: Esta instrucción ejecuta el comando `npm install` dentro del contenedor. Se instalan todas las dependencias listadas en el archivo `package.json` que se copió anteriormente. Esto asegura que todas las dependencias de la aplicación estén instaladas dentro del contenedor.
+
+5. `COPY . .`: Esta instrucción copia el resto del código fuente de la aplicación desde el directorio actual del contexto de construcción del Dockerfile al directorio de trabajo (`/app` dentro del contenedor). Aquí se asume que todo el código fuente de la aplicación está en el mismo directorio que el Dockerfile.
+
+6. `EXPOSE 8000`: Esta instrucción expone el puerto 8000 del contenedor para que la aplicación pueda ser accesible desde fuera del contenedor. Esto no hace que el puerto esté accesible desde el host por sí mismo, pero indica que la aplicación dentro del contenedor está escuchando en el puerto 8000.
+
+7. `CMD ["npm", "start"]`: Esta instrucción especifica el comando por defecto que se ejecutará cuando se inicie un contenedor basado en esta imagen. En este caso, se ejecutará el comando `npm start`, que normalmente se utiliza para iniciar la aplicación Node.js.
+
+### DOCKERFILE FRONTEND
+
+Este es otro archivo Dockerfile que describe cómo construir una imagen Docker para una aplicación Node.js. A continuación, se desglosa cada una de las instrucciones:
+
+1. `FROM node:16.20.2-alpine`: Esta instrucción especifica la imagen base que se utilizará para construir la imagen Docker. En este caso, se utiliza la imagen oficial de Node.js con la etiqueta `16.20.2-alpine`, que está basada en Alpine Linux.
+
+2. `WORKDIR /usr/src/app`: Establece el directorio de trabajo dentro del contenedor en `/usr/src/app`. Todos los comandos siguientes se ejecutarán dentro de este directorio.
+
+3. `COPY package*.json ./`: Esta instrucción copia los archivos `package.json` y `package-lock.json` (si existen) desde el directorio actual (contexto de construcción del Dockerfile) al directorio de trabajo (`/usr/src/app` dentro del contenedor).
+
+4. `RUN npm install`: Ejecuta el comando `npm install` dentro del contenedor para instalar las dependencias de la aplicación.
+
+5. `COPY . .`: Copia el resto de los archivos de la aplicación desde el directorio actual (contexto de construcción del Dockerfile) al directorio de trabajo (`/usr/src/app` dentro del contenedor).
+
+6. `RUN npm run build`: Compila la aplicación ejecutando el comando `npm run build` dentro del contenedor. Esto asume que hay un script definido en el archivo `package.json` que maneja el proceso de compilación.
+
+7. `EXPOSE 3000`: Esta instrucción expone el puerto 3000 del contenedor para que la aplicación pueda ser accesible desde fuera del contenedor.
+
+8. `CMD ["npm", "start"]`: Especifica el comando por defecto que se ejecutará cuando se inicie un contenedor basado en esta imagen. En este caso, se ejecutará el comando `npm start`, que normalmente se utiliza para iniciar la aplicación Node.js.
+
+## [LINK DEL VIDEO DE YUTUB](https://www.youtube.com/watch?v=l9ZKy6pra_k)
