@@ -1,27 +1,61 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
+import React, {useState, useEffect} from 'react';
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
+import {Doughnut} from "react-chartjs-2";
+import {Ram} from "../wailsjs/go/main/App";
 import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
-
-    function greet() {
-        Greet(name).then(updateResultText);
+    const [ramFree, setRamFree] = useState(0);
+    const [ramUse, setRamUse] = useState(0);
+    async function fetchRam() {
+        try {
+            const ram = await Ram();
+            setRamFree(ram);
+            setRamUse(50000-ram);
+        } catch (error) {
+            console.error("Error al obtener la RAM:", error);
+        }
     }
 
+    // Gráfica de dona
+    const data = {
+        labels: [ 'Libre', 'En Uso' ],
+        datasets: [
+            {
+                label: "USO DE RAM",
+                data: [50, 60],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.9)',
+                    'rgba(255, 99, 132, 0.9)',
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+    const options = {
+        cutout: 50
+    };
+
+    useEffect(() => {
+        const intervalo = setInterval(() =>{
+            fetchRam();
+        }, 500)
+        return clearInterval(intervalo);
+    }, []);
+
     return (
-        <div id="App">
-            <div className="center-container">
-                <div className="ram-chart">
-                    <div className="ram-bar" id="ram-bar"></div>
-                </div>
-            </div>
+        <div>
+            <h1>Ram libre: {ramFree}</h1>
+            <h1>Ram ocupada: {ramUse}</h1>
+            <Doughnut options={options} data={data} />
         </div>
-    )
+    );
 }
 
 export default App
