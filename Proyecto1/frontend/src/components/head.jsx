@@ -6,9 +6,9 @@ export default function Head() {
 
     return (
         <>
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav navbar-right">
+            <nav className="navbar navbar-default">
+                <div className="container-fluid">
+                    <ul className="nav navbar-nav navbar-right">
                         <li><a>202000173 - KritianWhite</a></li>
                     </ul>
                 </div>
