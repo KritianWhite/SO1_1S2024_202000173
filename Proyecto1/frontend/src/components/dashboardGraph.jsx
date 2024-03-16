@@ -6,7 +6,7 @@ import './styles/graph.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function Pies({ title, percentageFree, percentageOcupied }) {
+export default function DashboardGraph({ title, label, percentageFree, percentageOcupied }) {
 
     var options = {
         responsive: true,
@@ -17,7 +17,7 @@ export default function Pies({ title, percentageFree, percentageOcupied }) {
         labels: ['Percentage free', 'Percentage ocupied'],
         datasets: [
             {
-                label: 'Popularidad en Navidad',
+                label: label,
                 data: [percentageFree, percentageOcupied],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

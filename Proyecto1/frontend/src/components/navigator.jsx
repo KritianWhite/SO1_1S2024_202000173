@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 import './styles/navigator.css';
 
@@ -13,24 +13,16 @@ export default function Navigator() {
                 </header>
                 <ul className="nav">
                     <li>
-                        <a href="#">
-                            <i className="zmdi zmdi-view-dashboard"></i> Dashboard
-                        </a>
+                        <Link to="/" className="zmdi zmdi-view-dashboard">Dashboard</Link>
                     </li>
                     <li>
-                        <a href="#">
-                            <i className="zmdi zmdi-link"></i> Shortcuts
-                        </a>
+                        <Link to="/historic" className="zmdi zmdi-link">Historic</Link>
                     </li>
                     <li>
-                        <a href="#">
-                            <i className="zmdi zmdi-widgets"></i> Overview
-                        </a>
+                        <Link to="/tree" className="zmdi zmdi-link">Tree</Link>
                     </li>
                     <li>
-                        <a href="#">
-                            <i className="zmdi zmdi-calendar"></i> Events
-                        </a>
+                        <Link to="/diagramProcess" className="zmdi zmdi-link">Diagram of process state</Link>
                     </li>
                     <li>
                         <a href="#">

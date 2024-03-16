@@ -1,0 +1,59 @@
+services: 
+
+  p1_so1_frontend:
+    restart: on-failure
+    container_name: p1_so1_frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app_net
+    depends_on:
+      - p1_so1_backend
+
+  p1_so1_backend:
+    restart: on-failure
+    container_name: p1_so1_backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - app_net
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MYSQL_HOST=p1_so1_mysqldb
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    depends_on:
+      - p1_so1_mysqldb
+
+  p1_so1_mysqldb:
+    restart: on-failure
+    container_name: p1_so1_mysqldb
+    command: --default-authentication-plugin=mysql_native_password --sql_mode=""
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    networks:
+      - app_net
+    volumes:
+      - p1-so1-mysql-vol:/var/lib/mysql
+      - ./database_init.sql:/docker-entrypoint-initdb.d/database_init.sql
+
+networks:
+    app_net:
+      driver: bridge
+
+volumes:
+  p1-so1-mysql-vol:
