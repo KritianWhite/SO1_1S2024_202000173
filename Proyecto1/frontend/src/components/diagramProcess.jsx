@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { DataSet, Network } from 'vis-network/standalone/esm/vis-network';
 
 const ProcessDiagram = ({ currentHighlight }) => {

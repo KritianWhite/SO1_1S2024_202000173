@@ -14,11 +14,11 @@ export default function Dashboard() {
     const [libre, setLibre] = useState(0);
 
     const [porcentajeCPU, setPorcentajeCPU] = useState(0);
+    const serverUrl = "/api";
 
     const getRamUsage = async () => {
         //const serverUrl = "http://localhost:5000";
         //await fetch(`${serverUrl}/${value}ram`);
-        const serverUrl = "/api";
         try {
             const response = await fetch(`${serverUrl}/ram`, {
                 method: 'GET',
@@ -38,7 +38,6 @@ export default function Dashboard() {
     };
 
     const getCPUUsage = async () => {
-        const serverUrl = "http://localhost:5000";
         //await fetch(`${serverUrl}/${value}ram`);
         try {
             const response = await fetch(`${serverUrl}/cpu`, {

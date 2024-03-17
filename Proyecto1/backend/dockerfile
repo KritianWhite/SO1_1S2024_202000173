@@ -15,9 +15,3 @@ EXPOSE 5000
 
 # Comando para ejecutar la aplicación
 CMD ["./main"]
-
-#Notas:
-# Crear imagen: docker build -t back_tarea1 .
-#docker build -t back_tarea1 .
-# Correr imagen: docker run -p 8080:8080 back_tarea1
-#docker run -p 8080:8080 back_tarea1docker

@@ -1,11 +1,10 @@
 services: 
-
   p1_so1_frontend:
     restart: on-failure
     container_name: p1_so1_frontend
     build: 
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "80:80"
     networks:
@@ -18,7 +17,7 @@ services:
     container_name: p1_so1_backend
     build: 
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "5000:5000"
     networks:
