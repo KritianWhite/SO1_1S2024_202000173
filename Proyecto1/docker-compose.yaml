@@ -1,25 +1,10 @@
-services: 
-  p1_so1_frontend:
-    restart: on-failure
-    container_name: p1_so1_frontend
-    build: 
-      context: ./frontend
-      dockerfile: dockerfile
-    ports:
-      - "80:80"
-    networks:
-      - app_net
-    depends_on:
-      - p1_so1_backend
-
+services:
   p1_so1_backend:
-    restart: on-failure
+    image: kritianwhite/proyecto1-p1_so1_backend
     container_name: p1_so1_backend
-    build: 
-      context: ./backend
-      dockerfile: dockerfile
     ports:
-      - "5000:5000"
+      - 5000:5000
+    restart: always
     networks:
       - app_net
     environment:
@@ -31,6 +16,17 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     depends_on:
       - p1_so1_mysqldb
+
+  p1_so1_frontend:
+    image: kritianwhite/proyecto1-p1_so1_frontend
+    container_name: p1_so1_frontend
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - app_net
+    depends_on:
+      - p1_so1_backend
 
   p1_so1_mysqldb:
     restart: on-failure
