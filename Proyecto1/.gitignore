@@ -1,9 +1,1 @@
 *.env
-*.cmd
-*.symvers
-*.order
-*.mod
-*.mod.c
-*.order
-*.o 
-*.ko

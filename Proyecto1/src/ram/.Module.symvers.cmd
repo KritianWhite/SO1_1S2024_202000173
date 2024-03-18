@@ -1,0 +1,1 @@
+savedcmd_/home/christian/go/src/SO1_1S2024_202000173/Proyecto1/src/ram/Module.symvers :=  scripts/mod/modpost -m -a      -o /home/christian/go/src/SO1_1S2024_202000173/Proyecto1/src/ram/Module.symvers -T /home/christian/go/src/SO1_1S2024_202000173/Proyecto1/src/ram/modules.order -i Module.symvers -e 
