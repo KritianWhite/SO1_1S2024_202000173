@@ -1,32 +1,23 @@
-version: '3'
 services:
   p1_so1_backend:
-    build:
-      context: ./backend
     image: kritianwhite/proyecto1-p1_so1_backend
     container_name: p1_so1_backend
     ports:
-      - "5000:5000"
-    depends_on:
-      - p1_so1_mysqldb
+      - 5000:5000
+    restart: always
     networks:
       - app_net
-    restart: always
-    privileged: true
-    pid: host
-    volumes:
-      - /proc:/proc
     environment:
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME}
-      - SERVER_PORT=${SERVER_PORT}
+      - NODE_ENV=development
+      - PORT=5000
+      - MYSQL_HOST=p1_so1_mysqldb
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    depends_on:
+      - p1_so1_mysqldb
 
   p1_so1_frontend:
-    build:
-      context: ./frontend
     image: kritianwhite/proyecto1-p1_so1_frontend
     container_name: p1_so1_frontend
     restart: always
