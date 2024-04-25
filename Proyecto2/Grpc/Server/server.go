@@ -1,9 +1,9 @@
 package main
 
 import (
+	pb "SO1_1S2024_202000173/Proyecto2/Grpc/Server/Proto" // Importa el paquete generado a partir de tu archivo .proto
 	"context"
 	"fmt"
-	pb "SO1_1S2024_202000173/Proyecto2/Grpc/Server/Proto" // Importa el paquete generado a partir de tu archivo .proto
 	"log"
 	"net"
 	"os"
@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// CargarVariablesEntorno carga las variables de entorno desde el archivo .env
+// CargarVariablesEntorno carga las variables de entorno
 func CargarVariablesEntorno() {
 	err := godotenv.Load()
 	if err != nil {
@@ -33,7 +33,7 @@ type BandsData struct {
 }
 
 func (s *server) SendBandInfo(ctx context.Context, in *pb.Band) (*pb.BandResponse, error) {
-	fmt.Println("Servidor ha recibido informacion desde el cliente")
+	fmt.Println("Recibiendo informacion desde el cliente")
 	data := BandsData{
 		name:  in.GetName(),
 		album: in.GetAlbum(),
@@ -42,7 +42,7 @@ func (s *server) SendBandInfo(ctx context.Context, in *pb.Band) (*pb.BandRespons
 	}
 	fmt.Println(data)
 
-	return &pb.BandResponse{Message: "Data recibida exitosamente desde el servidor"}, nil
+	return &pb.BandResponse{Message: "Data recibida desde el servidor"}, nil
 }
 
 func main() {

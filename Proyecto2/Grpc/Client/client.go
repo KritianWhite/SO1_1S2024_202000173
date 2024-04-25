@@ -1,9 +1,9 @@
 package main
 
 import (
+	pb "SO1_1S2024_202000173/Proyecto2/Grpc/Client/Proto" // Importa el paquete generado a partir de tu archivo .proto
 	"context"
 	"fmt"
-	pb "SO1_1S2024_202000173/Proyecto2/Grpc/Client/Proto" // Importa el paquete generado a partir de tu archivo .proto
 	"log"
 	"os"
 	"strconv"
