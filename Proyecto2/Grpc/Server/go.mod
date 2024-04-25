@@ -3,6 +3,7 @@ module SO1_1S2024_202000173/Proyecto2/Grpc/Server
 go 1.21.6
 
 require (
+	github.com/joho/godotenv v1.5.1
 	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.33.0
 )
