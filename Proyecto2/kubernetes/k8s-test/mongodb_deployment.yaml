@@ -1,0 +1,73 @@
+# mongodb_deployment.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    io.kompose.service: mongodb-data
+  name: mongodb-data
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: mongodb
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mongodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: mongodb
+    spec:
+      containers:
+      - image: mongo
+        name: mongodb
+        ports:
+        - containerPort: 27017
+          hostPort: 27017
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongodb-data
+      restartPolicy: Always
+      volumes:
+      - name: mongodb-data
+        persistentVolumeClaim:
+          claimName: mongodb-data
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: mongodb
+  name: mongodb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "27017"
+    port: 27017
+    targetPort: 27017
+  selector:
+    io.kompose.service: mongodb
+status:
+  loadBalancer: {}

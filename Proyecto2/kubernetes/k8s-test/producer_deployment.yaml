@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: golang-producer
+  name: golang-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: golang-producer
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: golang-producer
+    spec:
+      containers:
+      - image: kritianwhite/project2_golang_producer
+        name: golang-producer
+        ports:
+        - containerPort: 3001
+          hostPort: 3001
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: golang-producer
+  name: golang-producer
+spec:
+  ports:
+  - name: "3001"
+    port: 3001
+    targetPort: 3001
+  selector:
+    io.kompose.service: golang-producer
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: golang-client
+  name: golang-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: golang-client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: golang-client
+    spec:
+      containers:
+      - image: kritianwhite/project2_golang_client
+        name: golang-client
+        ports:
+        - containerPort: 8080
+          hostPort: 8080
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: golang-client
+  name: golang-client
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+  selector:
+    io.kompose.service: golang-client

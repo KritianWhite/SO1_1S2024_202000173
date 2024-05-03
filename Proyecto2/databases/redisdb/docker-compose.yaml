@@ -1,6 +1,0 @@
-services:
-  database:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: KritianWhite/p2_redisdb:latest

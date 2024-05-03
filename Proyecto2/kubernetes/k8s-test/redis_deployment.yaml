@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: redis
+    spec:
+      containers:
+      - args:
+        - redis-server
+        - --loadmodule
+        - /usr/lib/redis/modules/rejson.so
+        image: redislabs/rejson:latest
+        name: redis
+        ports:
+        - containerPort: 6379
+          hostPort: 6379
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: redis
+  name: redis
+spec:
+  type: LoadBalancer # Tipo de servicio LoadBalancer
+  ports:
+  - name: "6379"
+    port: 6379
+    targetPort: 6379
+  selector:
+    io.kompose.service: redis
+status:
+  loadBalancer: {} # Esta sección se llenará cuando se asigne una dirección IP externa
+
+#redis-cli -h 34.70.136.69 -p 6379

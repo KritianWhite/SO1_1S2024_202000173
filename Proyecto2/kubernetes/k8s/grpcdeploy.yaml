@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploymentgrpc
+  namespace: p2-so1
+spec:
+  selector:
+    matchLabels:
+      role: deploymentgrpc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: deploymentgrpc
+    spec:
+      containers:
+      - name: containclient
+        image: kritianwhite/p2_go_client
+        ports:
+        - containerPort: 5000
+          hostPort: 5000
+          protocol: TCP
+      - name: containserver
+        image: kritianwhite/p2_go_producer
+        ports:
+        - containerPort: 5001
+          hostPort: 5001
+          protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: p2-so1
+  name: service-grpc
+spec:
+  type: LoadBalancer  
+  ports:
+  - name: grpc-client
+    port: 5000
+    targetPort: 5000
+  selector:
+    role: deploymentgrpc

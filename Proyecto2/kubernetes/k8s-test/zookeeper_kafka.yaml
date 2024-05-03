@@ -1,0 +1,100 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: zookeeper
+  name: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: zookeeper
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: zookeeper
+    spec:
+      containers:
+      - env:
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
+        image: bitnami/zookeeper:latest
+        name: zookeeper
+        ports:
+        - containerPort: 2181
+          hostPort: 2181
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: zookeeper
+  name: zookeeper
+spec:
+  ports:
+  - name: "2181"
+    port: 2181
+    targetPort: 2181
+  selector:
+    io.kompose.service: zookeeper
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: kafka
+  name: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kafka
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/so1-proyecto2: "true"
+        io.kompose.service: kafka
+    spec:
+      containers:
+      - env:
+        - name: ALLOW_PLAINTEXT_LISTENER
+          value: "yes"
+        - name: KAFKA_CFG_ADVERTISED_LISTENERS
+          value: PLAINTEXT://kafka:9092
+        - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+          value: zookeeper:2181
+        image: bitnami/kafka:latest
+        name: kafka
+        ports:
+        - containerPort: 9092
+          hostPort: 9092
+          protocol: TCP
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: kafka
+  name: kafka
+spec:
+  ports:
+  - name: "9092"
+    port: 9092
+    targetPort: 9092
+  selector:
+    io.kompose.service: kafka
+status:
+  loadBalancer: {}

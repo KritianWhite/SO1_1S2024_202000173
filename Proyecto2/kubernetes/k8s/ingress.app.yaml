@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-grpc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+  namespace: p2-so1
+spec:
+  rules:
+  - host: 34.72.172.115.nip.io  # Cambia esto por tu dominio o IP
+    http:
+      paths:
+      - path: /insert
+        pathType: Prefix
+        backend:
+          service:
+            name: service-grpc
+            port:
+              number: 5000
+      - path: /rust
+        pathType: Prefix
+        backend:
+          service:
+            name: service-rust
+            port:
+              number: 5003
