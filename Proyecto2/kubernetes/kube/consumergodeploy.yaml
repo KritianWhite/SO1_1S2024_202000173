@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: consumer
-        image: luischay/consumerkafka9 # Reemplaza con la imagen de tu consumidor Go
+        image: kritianwhite/p2_go_consumer # Reemplaza con la imagen de tu consumidor Go
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
